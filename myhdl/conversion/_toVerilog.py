@@ -700,6 +700,14 @@ class _ConvertVisitor(ast.NodeVisitor, _ConversionMixin):
             # skip list comprehension assigns for now
             return
         # default behavior
+        t = node.targets[0]
+        if isinstance(t, ast.Attribute) and isinstance(t.value, ast.Name):
+            v = self.tree.symdict[t.value.id]
+            # print("TARGET ID", t.value.id, v, type(v))
+            if isinstance(v, _Signal) and v._name is None:
+                print("warning: bad assign to", t.value.id, v)
+                self.write('// ')
+
         self.visit(node.targets[0])
         if self.isSigAss:
             self.write(' <= ')
