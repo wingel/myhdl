@@ -30,6 +30,7 @@ import re
 import ast
 from itertools import chain
 from collections import defaultdict
+import warnings
 
 import myhdl
 from myhdl import *
@@ -1067,7 +1068,10 @@ class _AnalyzeBlockVisitor(_AnalyzeVisitor):
         for n in self.tree.outputs:
             s = self.tree.sigdict[n]
             if s._driven:
-                self.raiseError(node, _error.SigMultipleDriven, n)
+                if 0:
+                    self.raiseError(node, _error.SigMultipleDriven, n)
+                else:
+                    warnings.warn("%s: %s %s" % (_error.SigMultipleDriven, node, n))
             s._driven = "reg"
         for n in self.tree.inputs:
             s = self.tree.sigdict[n]

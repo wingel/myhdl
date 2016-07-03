@@ -25,6 +25,7 @@ import inspect
 from types import FunctionType
 import re
 import ast
+import warnings
 
 from myhdl import AlwaysCombError
 from myhdl._Signal import _Signal, _isListOfSigs
@@ -214,7 +215,10 @@ class _AlwaysComb(_Instantiator):
         self.senslist = tuple(senslist)
         self.gen = self.genfunc()
         if len(self.senslist) == 0:
-            raise AlwaysCombError(_error.EmptySensitivityList)
+            if 0:
+                raise AlwaysCombError(_error.EmptySensitivityList)
+            else:
+                warnings.warn("%s: %s" % (_error.EmptySensitivityList, s))
         if len(self.senslist) == 1:
             W = _SignalWaiter
         else:
